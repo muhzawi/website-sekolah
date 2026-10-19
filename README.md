@@ -2,12 +2,24 @@
 
 Website frontend untuk menyajikan informasi sekolah, program keahlian, berita dan pengumuman, kontak, serta pendaftaran peserta didik baru (PPDB). Antarmuka dibuat responsif dan menyediakan navigasi mobile, carousel gambar, filter berita, pagination, dan formulir interaktif.
 
+## Link Figma
+
+https://www.figma.com/design/QKD6bfFeH1VhTqUu8HnNTe/Wireframe-Website-Sekolah?node-id=0-1
+
 ## Teknologi
 
 - React 19 dan JavaScript (ES modules)
 - Vite 8 sebagai development server dan build tool
 - CSS biasa untuk styling dan responsive layout
 - ESLint untuk pemeriksaan kualitas kode
+
+## Kontribusi Tiap Anggota
+
+- Muhammad Zaki Ulwi (Leader, Product Manager)
+- ReRengga Eko Saputra (Co leader, Co Product Manager)
+- Azolla Ewa Ramadhani & Tesah Anggun Rahayu  (UI/UX Designer)
+- Marsha Aulia Fakhriza (QA Tester)
+
 
 ## Menjalankan di komputer lokal
 
