@@ -129,7 +129,7 @@ cd backend && npm run dev
 Frontend: http://localhost:5173  
 Backend: http://localhost:5000
 
-> **Catatan:** Vite mem-proxy `/api` ke `http://localhost:5000`. Jika `VITE_API_BASE_URL` dikosongkan, frontend memakai `/api` (proxy). Untuk produksi, isi URL backend Vercel.
+> **Catatan:** Frontend memakai path `/api`; Vite mem-proxy path tersebut ke `http://localhost:5000` saat development, dan Vercel mengarahkannya ke service backend saat production.
 >
 > Root backend (`http://localhost:5000/`) menampilkan status backend dalam JSON. Untuk membuka website, gunakan `http://localhost:5173`; endpoint backend berada di `/api`.
 
@@ -138,10 +138,11 @@ Backend: http://localhost:5000
 ### Frontend (`frontend/.env`)
 
 ```env
-VITE_API_BASE_URL=http://localhost:5000/api
 VITE_SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_ANON_KEY
 ```
+
+Frontend memakai path relatif `/api`: di lokal path ini diteruskan oleh proxy Vite ke backend, dan di Vercel diteruskan melalui rewrite service.
 
 ### Backend (`backend/.env`)
 
@@ -293,42 +294,32 @@ WHERE id = (SELECT id FROM auth.users WHERE email = 'email-admin@domain.com');
 
 ## Keputusan Arsitektur
 
-Frontend dan backend berada di satu repositori, tetapi di-deploy sebagai **dua proyek Vercel** (root `frontend` dan `backend`). Ini menghindari konfigurasi monorepo yang rumit, menjaga service role key hanya di backend, dan sesuai runtime Vercel Functions (tanpa proses Express yang berjalan terus-menerus).
+Frontend dan backend berada di satu repositori dan di-deploy sebagai **dua service dalam satu proyek Vercel**. `frontend` menerima path selain `/api/*`, sedangkan `backend` menerima `/api/*`. Frontend memanggil API melalui path relatif same-origin `/api`; tidak diperlukan service binding karena panggilan itu terjadi dari browser, bukan dari runtime function ke runtime function.
 
 Supabase tetap layanan eksternal (PostgreSQL, Auth, Storage). Operasi bisnis selalu lewat REST API Express; frontend hanya memakai kunci publishable untuk sesi Auth.
 
 ## Deployment Vercel
 
-### Dua Proyek dari Satu Repository
+### Satu Proyek dengan Multiple Services
 
-**Proyek 1 — Frontend:**
-- Root Directory: `frontend`
-- Build Command: `npm run build`
-- Output Directory: `dist`
-- Framework: Vite
+1. Push repository ke GitHub.
+2. Di Vercel pilih **Add New → Project**, lalu impor repository.
+3. Biarkan **Root Directory** di root repository, yaitu folder yang berisi `vercel.json`.
+4. Vercel membaca `services` di root [`vercel.json`](./vercel.json). Jangan membuat dua proyek terpisah atau mengubah root directory menjadi `frontend` maupun `backend`.
+5. Tambahkan Environment Variables berikut pada project Vercel:
 
-Environment Variables:
-```
-VITE_API_BASE_URL=https://your-backend.vercel.app/api
-VITE_SUPABASE_URL=https://xxx.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
-```
+   ```env
+   FRONTEND_URL=https://domain-project-anda.vercel.app
+   SUPABASE_URL=https://xxx.supabase.co
+   SUPABASE_ANON_KEY=your-anon-key
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   VITE_SUPABASE_URL=https://xxx.supabase.co
+   VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
+   ```
 
-**Proyek 2 — Backend:**
-- Root Directory: `backend`
-- Build Command: (kosong atau `npm install`)
-- Output Directory: (kosong)
-- Framework: Other
-
-Environment Variables:
-```
-FRONTEND_URL=https://your-frontend.vercel.app
-SUPABASE_URL=https://xxx.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-```
-
-Setelah deploy backend, update `VITE_API_BASE_URL` di frontend dengan URL backend yang sebenarnya, lalu redeploy frontend.
+   Atur `FRONTEND_URL` ke origin domain Vercel yang akan dipakai, tanpa path. Jangan menambahkan `VITE_API_BASE_URL`; API frontend memakai `/api`. `SUPABASE_SERVICE_ROLE_KEY` adalah rahasia backend—jangan beri prefix `VITE_`.
+6. Deploy project. Kedua service berbagi domain, misalnya `https://domain-project-anda.vercel.app`.
+7. Uji `https://domain-project-anda.vercel.app/` untuk frontend dan `https://domain-project-anda.vercel.app/api/health` untuk backend.
 
 ## Troubleshooting
 
@@ -336,8 +327,8 @@ Setelah deploy backend, update `VITE_API_BASE_URL` di frontend dengan URL backen
 |---|---|
 | `401 Unauthorized` | Cek token Supabase, pastikan session masih aktif |
 | `403 Forbidden` | Cek role user di tabel `profiles` |
-| `CORS error` | Pastikan `FRONTEND_URL` di backend sesuai dengan URL frontend |
-| `404 di refresh` | Pastikan Root Directory proyek frontend adalah `frontend` dan rewrite SPA pada `frontend/vercel.json` ter-deploy |
+| `CORS error` | Pastikan `FRONTEND_URL` adalah origin domain Vercel yang sama dengan frontend |
+| `404 di refresh` | Pastikan Root Directory Vercel tetap root repository agar rewrite multiple services di `vercel.json` digunakan |
 | Gambar tidak muncul | Cek bucket `news-images` sudah Public dan RLS mengizinkan SELECT |
 | Admin tidak bisa login | Jalankan `promote_to_admin('email@domain.com')` di SQL Editor |
 | Backend timeout di Vercel | Operasi database harus < 10 detik (Vercel Functions limit) |
