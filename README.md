@@ -337,7 +337,7 @@ Setelah deploy backend, update `VITE_API_BASE_URL` di frontend dengan URL backen
 | `401 Unauthorized` | Cek token Supabase, pastikan session masih aktif |
 | `403 Forbidden` | Cek role user di tabel `profiles` |
 | `CORS error` | Pastikan `FRONTEND_URL` di backend sesuai dengan URL frontend |
-| `404 di refresh` | Pastikan `vercel.json` dengan rewrite SPA sudah ada di folder frontend |
+| `404 di refresh` | Pastikan Root Directory proyek frontend adalah `frontend` dan rewrite SPA pada `frontend/vercel.json` ter-deploy |
 | Gambar tidak muncul | Cek bucket `news-images` sudah Public dan RLS mengizinkan SELECT |
 | Admin tidak bisa login | Jalankan `promote_to_admin('email@domain.com')` di SQL Editor |
 | Backend timeout di Vercel | Operasi database harus < 10 detik (Vercel Functions limit) |
