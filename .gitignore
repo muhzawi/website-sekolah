@@ -10,7 +10,7 @@ build/
 .env.*
 !.env.example
 
-# Logs and package-manager debug files
+# Logs and debug files
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*

@@ -1,33 +1,25 @@
-function NewsCard({ item, onSelect }) {
-  const content = (
-    <>
-      <img className="news-card-image" src={item.image} alt={item.alt} />
-      <div className="news-card-copy">
-        <time>{item.date}</time>
-        <h3>{item.title}</h3>
-        {item.description && <p>{item.description}</p>}
-      </div>
-    </>
-  )
+import { Link } from 'react-router-dom'
+import { newsImageUrl } from '../utils/media.js'
 
-  if (onSelect) {
-    return (
-      <button
-        type="button"
-        className="news-card news-card--button"
-        onClick={() => onSelect(item)}
-        aria-label={`Baca berita: ${item.title}`}
-      >
-        {content}
-      </button>
-    )
-  }
+export default function NewsCard({ item }) {
+  const imageSrc = item.image || newsImageUrl(item.cover_image_path)
+
+  const dateStr = item.date || (item.published_at
+    ? new Date(item.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+    : '')
+
+  const href = item.slug ? `/news/${item.slug}` : '/news'
 
   return (
-    <a className="news-card" href="?page=news" aria-label={`Lihat berita: ${item.title}`}>
-      {content}
-    </a>
+    <Link className="news-card" to={href} aria-label={`Baca berita: ${item.title}`}>
+      {imageSrc && <img className="news-card-image" src={imageSrc} alt={item.alt || item.title} />}
+      <div className="news-card-copy">
+        <time>{dateStr}</time>
+        <h3>{item.title}</h3>
+        {(item.description || item.excerpt) && (
+          <p>{item.description || item.excerpt}</p>
+        )}
+      </div>
+    </Link>
   )
 }
-
-export default NewsCard

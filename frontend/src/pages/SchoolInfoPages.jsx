@@ -1,7 +1,8 @@
+import { Link } from 'react-router-dom'
 import PageHeading from '../components/PageHeading.jsx'
 import { programs, schoolImage } from '../data/schoolData.js'
 
-function ProfilePage() {
+export function ProfilePage() {
   const missions = [
     'Mengembangkan kurikulum yang relevan dengan kebutuhan industri dan perkembangan teknologi.',
     'Meningkatkan kualitas pembelajaran melalui praktik lapangan, proyek berbasis industri, dan pendampingan guru profesional.',
@@ -12,10 +13,7 @@ function ProfilePage() {
 
   return (
     <>
-      <PageHeading
-        breadcrumbs={['Beranda', 'Profil Sekolah']}
-        title="Profil Sekolah"
-      />
+      <PageHeading breadcrumbs={['Beranda', 'Profil Sekolah']} title="Profil Sekolah" />
       <section className="profile-about surface content-card">
         <div>
           <h2>Tentang Kami</h2>
@@ -30,14 +28,10 @@ function ProfilePage() {
             Dengan lingkungan belajar yang kondusif, fasilitas praktik yang
             memadai, dan pendampingan guru yang berpengalaman, sekolah ini
             menjadi pilihan bagi siswa yang ingin menyiapkan diri untuk terjun
-            langsung ke dunia kerja dan melanjutkan ke jenjang pendidikan
-            tinggi.
+            langsung ke dunia kerja dan melanjutkan ke jenjang pendidikan tinggi.
           </p>
         </div>
-        <img
-          src={schoolImage}
-          alt="Gedung utama dan halaman SMK Negeri 1 Nusantara"
-        />
+        <img src={schoolImage} alt="Gedung utama dan halaman SMK Negeri 1 Nusantara" />
       </section>
 
       <section className="profile-vision surface content-card">
@@ -47,16 +41,14 @@ function ProfilePage() {
           berdaya saing tinggi, dan memiliki integritas akademik yang kuat.
         </p>
         <ol>
-          {missions.map((mission) => (
-            <li key={mission}>{mission}</li>
-          ))}
+          {missions.map((mission) => <li key={mission}>{mission}</li>)}
         </ol>
       </section>
     </>
   )
 }
 
-function ProgramsPage() {
+export function ProgramsPage() {
   return (
     <>
       <PageHeading
@@ -77,9 +69,7 @@ function ProgramsPage() {
               <h2>{program.title}</h2>
               <p>{program.description}</p>
               <ul>
-                {program.highlights.map((highlight) => (
-                  <li key={highlight}>{highlight}</li>
-                ))}
+                {program.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
               </ul>
             </div>
           </article>
@@ -88,5 +78,3 @@ function ProgramsPage() {
     </>
   )
 }
-
-export { ProfilePage, ProgramsPage }

@@ -1,13 +1,14 @@
+import { Link } from 'react-router-dom'
 import { logoImage } from '../data/schoolData.js'
 
 const quickLinks = [
-  { title: 'Profil sekolah', page: 'profile' },
-  { title: 'Program keahlian', page: 'programs' },
-  { title: 'Berita & pengumuman', page: 'news' },
-  { title: 'PPDB', page: 'ppdb' },
+  { title: 'Profil sekolah', to: '/profil' },
+  { title: 'Program keahlian', to: '/program' },
+  { title: 'Berita & pengumuman', to: '/news' },
+  { title: 'PPDB', to: '/ppdb' },
 ]
 
-function Footer({ onNavigate }) {
+export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-inner">
@@ -23,14 +24,8 @@ function Footer({ onNavigate }) {
         </div>
         <div className="footer-links">
           <h2>Tautan</h2>
-          {quickLinks.map(({ title, page }) => (
-            <a
-              key={page}
-              href={`?page=${page}`}
-              onClick={(event) => onNavigate(event, page)}
-            >
-              {title}
-            </a>
+          {quickLinks.map(({ title, to }) => (
+            <Link key={to} to={to}>{title}</Link>
           ))}
         </div>
       </div>
@@ -41,5 +36,3 @@ function Footer({ onNavigate }) {
     </footer>
   )
 }
-
-export default Footer
