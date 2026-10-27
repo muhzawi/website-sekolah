@@ -23,7 +23,9 @@ const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
 
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    const isVercelOrigin = origin && /^https:\/\/(?:[a-z0-9-]+\.)+vercel\.app$/i.test(origin)
+
+    if (!origin || allowedOrigins.includes(origin) || isVercelOrigin) {
       cb(null, true)
     } else {
       cb(new Error('Not allowed by CORS'))
