@@ -2,7 +2,7 @@ import axios from 'axios'
 import { supabase } from '../lib/supabase.js'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 15000,
 })
 
