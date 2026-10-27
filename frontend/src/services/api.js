@@ -2,7 +2,7 @@ import axios from 'axios'
 import { supabase } from '../lib/supabase.js'
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   timeout: 15000,
 })
 
@@ -22,11 +22,14 @@ api.interceptors.response.use(
     if (axios.isCancel(error) || error.code === 'ERR_CANCELED') {
       return Promise.reject(error)
     }
-    const message =
+    const responseMessage =
       error.response?.data?.error ||
-      error.response?.data?.message ||
-      error.message ||
-      'Terjadi kesalahan. Coba lagi.'
+      error.response?.data?.message
+    const message = typeof responseMessage === 'string'
+      ? responseMessage
+      : error.response?.status === 404
+        ? 'Endpoint API tidak ditemukan (404). Periksa URL backend atau routing Vercel.'
+        : error.message || 'Terjadi kesalahan. Coba lagi.'
     return Promise.reject(new Error(message))
   }
 )

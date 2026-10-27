@@ -142,7 +142,7 @@ VITE_SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_ANON_KEY
 ```
 
-Frontend memakai path relatif `/api`: di lokal path ini diteruskan oleh proxy Vite ke backend, dan di Vercel diteruskan melalui rewrite service.
+Frontend memakai path relatif `/api` secara default: di lokal path ini diteruskan oleh proxy Vite ke backend, dan di Vercel diteruskan melalui rewrite. Jika frontend dan backend di-deploy pada proyek/domain Vercel terpisah, atur `VITE_API_URL` ke URL API backend, misalnya `https://backend-anda.vercel.app/api`.
 
 ### Backend (`backend/.env`)
 
@@ -313,11 +313,13 @@ Supabase tetap layanan eksternal (PostgreSQL, Auth, Storage). Operasi bisnis sel
    SUPABASE_URL=https://xxx.supabase.co
    SUPABASE_ANON_KEY=your-anon-key
    SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   # Opsional jika frontend dan backend memakai proyek Vercel terpisah
+   # VITE_API_URL=https://backend-anda.vercel.app/api
    VITE_SUPABASE_URL=https://xxx.supabase.co
    VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
    ```
 
-   Atur `FRONTEND_URL` ke origin domain Vercel yang akan dipakai, tanpa path. Jangan menambahkan `VITE_API_BASE_URL`; API frontend memakai `/api`. `SUPABASE_SERVICE_ROLE_KEY` adalah rahasia backend—jangan beri prefix `VITE_`.
+   Atur `FRONTEND_URL` ke origin domain Vercel yang akan dipakai, tanpa path. `VITE_API_URL` bersifat opsional bila routing `/api/*` pada satu domain sudah berjalan; untuk deployment backend terpisah, isi dengan URL backend yang diakhiri `/api`. `SUPABASE_SERVICE_ROLE_KEY` adalah rahasia backend—jangan beri prefix `VITE_`.
 6. Deploy project. Kedua service berbagi domain, misalnya `https://domain-project-anda.vercel.app`.
 7. Uji `https://domain-project-anda.vercel.app/` untuk frontend dan `https://domain-project-anda.vercel.app/api/health` untuk backend.
 
@@ -328,6 +330,7 @@ Supabase tetap layanan eksternal (PostgreSQL, Auth, Storage). Operasi bisnis sel
 | `401 Unauthorized` | Cek token Supabase, pastikan session masih aktif |
 | `403 Forbidden` | Cek role user di tabel `profiles` |
 | `CORS error` | Pastikan `FRONTEND_URL` adalah origin domain Vercel yang sama dengan frontend |
+| `404` pada `/api/news` atau `/api/ppdb/settings` | Pastikan `/api/health` mengarah ke backend. Jika backend memakai deployment terpisah, set `VITE_API_URL` ke `https://<domain-backend>.vercel.app/api` pada frontend lalu deploy ulang |
 | `404 di refresh` | Pastikan Root Directory Vercel tetap root repository agar rewrite multiple services di `vercel.json` digunakan |
 | Gambar tidak muncul | Cek bucket `news-images` sudah Public dan RLS mengizinkan SELECT |
 | Admin tidak bisa login | Jalankan `promote_to_admin('email@domain.com')` di SQL Editor |
