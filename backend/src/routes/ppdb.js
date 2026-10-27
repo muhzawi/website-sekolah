@@ -144,6 +144,26 @@ router.get('/me', authorize('peserta'), async (req, res, next) => {
 })
 
 /**
+ * GET /api/ppdb/settings — Public: active PPDB period/settings.
+ */
+router.get('/settings', async (req, res, next) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('ppdb_settings')
+      .select('*')
+      .eq('is_active', true)
+      .maybeSingle()
+
+    if (error) throw error
+
+    // Return null if no active period (not an error)
+    res.json(data || null)
+  } catch (err) {
+    next(err)
+  }
+})
+
+/**
  * GET /api/ppdb/:id — Detail (admin or owner).
  */
 router.get('/:id', async (req, res, next) => {
