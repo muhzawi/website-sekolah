@@ -13,12 +13,6 @@ Aplikasi web sekolah dengan sistem PPDB (Penerimaan Peserta Didik Baru) terinteg
 - **Role-based Access** — admin dan peserta dengan route protection
 - **Siap Deploy** — konfigurasi Vercel untuk frontend dan backend
 
-## Akun Demo
-
-| Peran | Email |
-|---|---|
-| Admin | `zakisecond12@gmail.com` |
-| Peserta | `muhammadulwi22@smk.belajar.id` |
 
 Kata sandi tidak dicantumkan di README. Bagikan kredensial melalui kanal privat, dan segera ganti kata sandi jika kata sandi tersebut sudah pernah dibagikan atau digunakan.
 
