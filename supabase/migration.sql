@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS public.ppdb_applications (
   parent_name TEXT NOT NULL,
   parent_phone TEXT NOT NULL,
   major_choice TEXT,
-  status TEXT NOT NULL DEFAULT 'menunggu' CHECK (status IN ('menunggu', 'diproses', 'diterima', 'ditolak')),
+  status TEXT NOT NULL DEFAULT 'menunggu' CHECK (status IN ('menunggu', 'berhasil', 'diterima', 'ditolak')),
   is_draft BOOLEAN NOT NULL DEFAULT false,
   admin_notes TEXT DEFAULT '',
   submitted_at TIMESTAMPTZ,
@@ -156,6 +156,11 @@ CREATE TABLE IF NOT EXISTS public.ppdb_applications (
 
 ALTER TABLE public.ppdb_applications ADD COLUMN IF NOT EXISTS email TEXT NOT NULL DEFAULT '';
 ALTER TABLE public.ppdb_applications ADD COLUMN IF NOT EXISTS is_draft BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE public.ppdb_applications DROP CONSTRAINT IF EXISTS ppdb_applications_status_check;
+UPDATE public.ppdb_applications SET status = 'berhasil' WHERE status = 'diproses';
+ALTER TABLE public.ppdb_applications
+  ADD CONSTRAINT ppdb_applications_status_check
+  CHECK (status IN ('menunggu', 'berhasil', 'diterima', 'ditolak'));
 
 CREATE INDEX IF NOT EXISTS idx_ppdb_user_id ON public.ppdb_applications(user_id);
 CREATE INDEX IF NOT EXISTS idx_ppdb_status ON public.ppdb_applications(status);

@@ -9,7 +9,7 @@ export default function LoginPage() {
   const location = useLocation()
   const from = location.state?.from?.pathname || null
 
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(location.state?.email || '')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -34,7 +34,11 @@ export default function LoginPage() {
         navigate('/peserta/dashboard', { replace: true })
       }
     } catch (err) {
-      setError(err.message || 'Email atau password salah.')
+      setError(
+        err.message?.toLowerCase().includes('invalid login credentials')
+          ? 'Email atau password salah.'
+          : err.message || 'Email atau password salah.'
+      )
     } finally {
       setLoading(false)
     }
@@ -66,6 +70,12 @@ export default function LoginPage() {
           <>
             <h1 className="auth-title">Masuk ke Akun</h1>
             <p className="auth-sub">Masuk untuk mengakses dashboard PPDB.</p>
+
+            {location.state?.registrationSuccess && (
+              <p className="alert alert--success" role="status">
+                Akun berhasil didaftarkan. Silakan masuk.
+              </p>
+            )}
 
             {error && <p className="alert alert--error" role="alert">{error}</p>}
 

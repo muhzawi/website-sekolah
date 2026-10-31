@@ -4,7 +4,7 @@ import { EmptyState, ErrorState, Spinner } from '../../components/Feedback.jsx'
 
 const STATUS_LABELS = {
   menunggu: { label: 'Menunggu Verifikasi', color: '#f59e0b', icon: '⏳', next: 'Tim kami akan memverifikasi data Anda.' },
-  diproses: { label: 'Sedang Diproses', color: '#6366f1', icon: '🔄', next: 'Data Anda sedang dalam proses seleksi.' },
+  berhasil: { label: 'Berhasil', color: '#6366f1', icon: '✅', next: 'Pendaftaran Anda berhasil diverifikasi dan sedang dalam proses seleksi.' },
   diterima: { label: 'Diterima', color: '#22c55e', icon: '✅', next: 'Selamat! Silakan ikuti proses daftar ulang.' },
   ditolak: { label: 'Tidak Diterima', color: '#ef4444', icon: '❌', next: 'Mohon maaf, pendaftaran Anda tidak dapat diproses.' },
 }

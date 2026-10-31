@@ -6,7 +6,7 @@ import { ErrorState, Spinner } from '../../components/Feedback.jsx'
 
 const STATUS_LABELS = {
   menunggu: { label: 'Menunggu Verifikasi', color: '#f59e0b', icon: '⏳' },
-  diproses: { label: 'Sedang Diproses', color: '#6366f1', icon: '🔄' },
+  berhasil: { label: 'Berhasil', color: '#6366f1', icon: '✅' },
   diterima: { label: 'Diterima', color: '#22c55e', icon: '✅' },
   ditolak: { label: 'Ditolak', color: '#ef4444', icon: '❌' },
 }

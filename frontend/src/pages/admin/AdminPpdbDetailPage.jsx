@@ -6,12 +6,12 @@ import { useToast } from '../../contexts/useToast.js'
 
 const STATUS_LABELS = {
   menunggu: { label: 'Menunggu', color: '#f59e0b' },
-  diproses: { label: 'Diproses', color: '#6366f1' },
+  berhasil: { label: 'Berhasil', color: '#6366f1' },
   diterima: { label: 'Diterima', color: '#22c55e' },
   ditolak: { label: 'Ditolak', color: '#ef4444' },
 }
 
-const STATUS_OPTIONS = ['menunggu', 'diproses', 'diterima', 'ditolak']
+const STATUS_OPTIONS = ['menunggu', 'berhasil', 'diterima', 'ditolak']
 
 export default function AdminPpdbDetailPage() {
   const { id } = useParams()

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { supabase } from '../lib/supabase.js'
 import api from '../services/api.js'
 
@@ -7,6 +7,7 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)      // { id, email, role, fullName, phone }
   const [loading, setLoading] = useState(true) // initial session check
+  const registering = useRef(false)
 
   useEffect(() => {
     // Restore session on mount
@@ -20,6 +21,14 @@ export function AuthProvider({ children }) {
 
     // Listen to auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (registering.current) {
+        if (!session) {
+          setUser(null)
+          setLoading(false)
+        }
+        return
+      }
+
       if (session) {
         fetchProfile()
       } else {
@@ -53,19 +62,21 @@ export function AuthProvider({ children }) {
     return profile
   }
 
-  async function register(fullName, email, phone, password) {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName, phone },
-      },
-    })
-    if (error) throw new Error(error.message)
-    if (data.session) {
-      await fetchProfile()
+  async function register(email, password) {
+    registering.current = true
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password })
+      if (error) throw new Error(error.message)
+
+      if (data.session) {
+        const { error: signOutError } = await supabase.auth.signOut()
+        if (signOutError) throw new Error(signOutError.message)
+      }
+
+      return data
+    } finally {
+      registering.current = false
     }
-    return data
   }
 
   async function logout() {

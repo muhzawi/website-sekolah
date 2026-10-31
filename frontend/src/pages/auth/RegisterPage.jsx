@@ -38,16 +38,12 @@ export default function RegisterPage() {
   const navigate = useNavigate()
 
   const [form, setForm] = useState({
-    fullName: '',
     email: '',
-    phone: '',
     password: '',
-    confirmPassword: '',
   })
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
 
   function updateField(e) {
     const { name, value } = e.target
@@ -59,22 +55,16 @@ export default function RegisterPage() {
     e.preventDefault()
     setError('')
 
-    if (!form.fullName.trim()) return setError('Nama lengkap wajib diisi.')
     if (!/^\S+@\S+\.\S+$/.test(form.email)) return setError('Format email tidak valid.')
-    if (!form.phone.trim()) return setError('Nomor telepon wajib diisi.')
-    if (!/^\+?[0-9\s\-()]{8,20}$/.test(form.phone)) {
-      return setError('Format nomor telepon tidak valid.')
-    }
     if (form.password.length < 8) return setError('Password minimal 8 karakter.')
-    if (form.password !== form.confirmPassword) return setError('Konfirmasi password tidak cocok.')
 
     setLoading(true)
     try {
-      const data = await register(form.fullName, form.email, form.phone, form.password)
-      setSuccess(true)
-      if (data.session) {
-        setTimeout(() => navigate('/peserta/dashboard', { replace: true }), 1500)
-      }
+      await register(form.email, form.password)
+      navigate('/login', {
+        replace: true,
+        state: { registrationSuccess: true, email: form.email },
+      })
     } catch (err) {
       if (err.message?.includes('already registered')) {
         setError('Email ini sudah terdaftar. Silakan masuk.')
@@ -98,28 +88,8 @@ export default function RegisterPage() {
         <p className="auth-sub">Buat akun untuk mengakses formulir PPDB online.</p>
 
         {error && <p className="alert alert--error" role="alert">{error}</p>}
-        {success && (
-          <p className="alert alert--success" role="status">
-            Akun berhasil dibuat! {form.email ? 'Jika verifikasi email aktif, periksa kotak masuk Anda. ' : ''}Anda dapat masuk setelah akun siap.
-          </p>
-        )}
 
-        {!success && (
-          <form onSubmit={handleSubmit} className="auth-form">
-            <label className="form-field">
-              <span>Nama Lengkap</span>
-              <input
-                id="reg-fullname"
-                name="fullName"
-                type="text"
-                autoComplete="name"
-                required
-                value={form.fullName}
-                onChange={updateField}
-                placeholder="Masukkan nama lengkap"
-              />
-            </label>
-
+        <form onSubmit={handleSubmit} className="auth-form">
             <label className="form-field">
               <span>Email</span>
               <input
@@ -131,20 +101,6 @@ export default function RegisterPage() {
                 value={form.email}
                 onChange={updateField}
                 placeholder="Masukkan email"
-              />
-            </label>
-
-            <label className="form-field">
-              <span>Nomor Telepon</span>
-              <input
-                id="reg-phone"
-                name="phone"
-                type="tel"
-                autoComplete="tel"
-                value={form.phone}
-                onChange={updateField}
-                required
-                placeholder="Contoh: 0812 3456 7890"
               />
             </label>
 
@@ -173,20 +129,6 @@ export default function RegisterPage() {
               <PasswordStrength password={form.password} />
             </label>
 
-            <label className="form-field">
-              <span>Konfirmasi Password</span>
-              <input
-                id="reg-confirm"
-                name="confirmPassword"
-                type={showPassword ? 'text' : 'password'}
-                autoComplete="new-password"
-                required
-                value={form.confirmPassword}
-                onChange={updateField}
-                placeholder="Ulangi password"
-              />
-            </label>
-
             <p className="form-note">
               Dengan mendaftar, Anda menyetujui penggunaan data untuk keperluan proses PPDB.
             </p>
@@ -194,8 +136,7 @@ export default function RegisterPage() {
             <button type="submit" className="button auth-submit" disabled={loading}>
               {loading ? 'Mendaftar…' : 'Buat Akun'}
             </button>
-          </form>
-        )}
+        </form>
 
         <div className="auth-footer">
           <span>

@@ -7,7 +7,7 @@ import { useToast } from '../../contexts/useToast.js'
 
 const STATUS_LABELS = {
   menunggu: { label: 'Menunggu', color: '#f59e0b' },
-  diproses: { label: 'Diproses', color: '#6366f1' },
+  berhasil: { label: 'Berhasil', color: '#6366f1' },
   diterima: { label: 'Diterima', color: '#22c55e' },
   ditolak: { label: 'Ditolak', color: '#ef4444' },
 }
@@ -83,7 +83,7 @@ export default function AdminPpdbPage() {
       )))
       setRetryKey(key => key + 1)
       setRejectConfirm(null)
-      toast(nextStatus === 'diproses'
+      toast(nextStatus === 'berhasil'
         ? `Pendaftaran ${item.full_name} berhasil diverifikasi.`
         : `Pendaftaran ${item.full_name} berhasil ditolak.`)
     } catch (err) {
@@ -135,7 +135,12 @@ export default function AdminPpdbPage() {
         <button type="button" className="button button--secondary" onClick={resetFilters}>Reset</button>
       </div>
 
-      <div className="table-wrapper surface">
+      <div
+        className="table-wrapper surface"
+        tabIndex={0}
+        role="region"
+        aria-label="Daftar pendaftar, geser horizontal untuk melihat semua kolom"
+      >
         {loading ? (
           <TableSkeleton rows={6} columns={9} />
         ) : error ? (
@@ -183,14 +188,14 @@ export default function AdminPpdbPage() {
                       <Link to={`/admin/ppdb/${item.id}`} className="button button--secondary btn-sm">
                         Detail
                       </Link>
-                      {(item.status === 'menunggu' || item.status === 'diproses') && (
+                      {(item.status === 'menunggu' || item.status === 'berhasil') && (
                         <>
                           {item.status === 'menunggu' && (
                             <button
                               type="button"
                               className="button btn-sm"
                               disabled={processingId === item.id}
-                              onClick={() => updateApplicationStatus(item, 'diproses')}
+                              onClick={() => updateApplicationStatus(item, 'berhasil')}
                             >
                               {processingId === item.id ? 'Menyimpan…' : 'Verifikasi'}
                             </button>
