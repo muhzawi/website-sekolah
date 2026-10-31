@@ -1,16 +1,32 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import PageHeading from '../components/PageHeading.jsx'
 import mapImage from '../assets/peta.png'
+import api from '../services/api.js'
 
 export default function ContactPage() {
   const [message, setMessage] = useState('')
+  const [isSending, setIsSending] = useState(false)
 
-  function submitMessage(event) {
+  async function submitMessage(event) {
     event.preventDefault()
-    setMessage(
-      'Pesan Anda sudah divalidasi. Pengiriman ke sekolah belum tersedia karena situs ini belum terhubung ke layanan backend.',
-    )
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    setMessage('')
+    setIsSending(true)
+    try {
+      await api.post('/contact/message', {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+      })
+      setMessage('Email berhasil dikirim. Terima kasih telah menghubungi kami.')
+      form.reset()
+    } catch (error) {
+      setMessage(error.message || 'Email gagal dikirim. Silakan coba lagi nanti.')
+    } finally {
+      setIsSending(false)
+    }
   }
 
   return (
@@ -45,7 +61,9 @@ export default function ContactPage() {
               <span>Pesan</span>
               <textarea name="message" placeholder="Tuliskan pesan Anda" rows="5" required />
             </label>
-            <button className="button" type="submit">Kirim Pesan</button>
+            <button className="button" type="submit" disabled={isSending}>
+              {isSending ? 'Mengirim…' : 'Kirim Pesan'}
+            </button>
           </form>
           <p className="status-message" role="status" aria-live="polite">{message}</p>
         </section>
@@ -63,7 +81,7 @@ export default function ContactPage() {
             </div>
             <div>
               <dt>Email</dt>
-              <dd><a href="mailto:info@smkn1nusantara.sch.id">info@smkn1nusantara.sch.id</a></dd>
+              <dd><a href="mailto:zakisecond12@gmail.com">zakisecond12@gmail.com</a></dd>
             </div>
           </dl>
           <h2 className="map-heading">Peta Lokasi</h2>

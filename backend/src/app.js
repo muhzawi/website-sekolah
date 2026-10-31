@@ -12,6 +12,7 @@ import ppdbRouter from './routes/ppdb.js'
 import newsRouter from './routes/news.js'
 import adminNewsRouter from './routes/adminNews.js'
 import dashboardRouter from './routes/dashboard.js'
+import contactRouter from './routes/contact.js'
 
 const app = express()
 app.set('trust proxy', 1)
@@ -76,6 +77,7 @@ app.get('/api/health', (_req, res) =>
 )
 
 app.use('/api/news', newsRouter)
+app.use('/api/contact', strictLimiter, contactRouter)
 
 app.get('/api/ppdb/settings', async (_req, res, next) => {
   try {

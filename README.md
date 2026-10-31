@@ -164,9 +164,15 @@ FRONTEND_URL=http://localhost:5173
 SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
 SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+
+# Pengiriman formulir kontak
+RESEND_API_KEY=YOUR_RESEND_API_KEY
+CONTACT_FROM_EMAIL=kontak@domain-terverifikasi-anda.com
 ```
 
 > ⚠️ **PENTING:** Jangan pernah expose `SUPABASE_SERVICE_ROLE_KEY` ke frontend atau commit ke Git.
+
+Formulir kontak mengirim email langsung dari backend ke `zakisecond12@gmail.com` melalui Resend. Buat API key Resend, verifikasi domain pengirim, lalu atur `RESEND_API_KEY` dan `CONTACT_FROM_EMAIL` pada backend lokal dan environment deployment (misalnya Vercel). Pesan tidak dapat terkirim sebelum kedua nilai ini dikonfigurasi.
 
 ## Konfigurasi Supabase
 
