@@ -5,7 +5,7 @@ import { parseQueryParams, buildPaginationMeta, parseDate, isValidUuid } from '.
 
 const router = Router()
 
-const PPDB_STATUSES = ['menunggu', 'diproses', 'diterima', 'ditolak']
+const PPDB_STATUSES = ['menunggu', 'berhasil', 'diterima', 'ditolak']
 
 async function generateRegistrationNumber() {
   const now = new Date()
@@ -297,7 +297,7 @@ router.patch('/me', authorize('peserta'), async (req, res, next) => {
       return res.status(404).json({ error: 'Pendaftaran tidak ditemukan.' })
     }
     if (!existing.is_draft && existing.status !== 'menunggu') {
-      return res.status(400).json({ error: 'Pendaftaran tidak dapat diubah setelah diproses.' })
+      return res.status(400).json({ error: 'Pendaftaran tidak dapat diubah setelah diverifikasi.' })
     }
 
     const submitting = req.body.submit === true

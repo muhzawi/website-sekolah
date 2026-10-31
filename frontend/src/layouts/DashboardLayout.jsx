@@ -10,7 +10,7 @@ const adminNavLinks = [
 ]
 
 const pesertaNavLinks = [
-  { to: '/peserta/dashboard', label: 'Ringkasan', icon: '⊞' },
+  { to: '/peserta/dashboard', label: 'Dashboard', icon: '⊞' },
   { to: '/peserta/ppdb', label: 'Formulir PPDB', icon: '📝' },
   { to: '/peserta/status', label: 'Status Pendaftaran', icon: '📋' },
   { to: '/peserta/profil', label: 'Profil Akun', icon: '👤' },

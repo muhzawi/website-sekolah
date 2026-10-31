@@ -68,7 +68,7 @@ export default function AdminDashboardPage() {
         [nextStatus]: current[nextStatus] + 1,
       }))
       setRejectConfirm(null)
-      toast(nextStatus === 'diproses'
+      toast(nextStatus === 'berhasil'
         ? `Pendaftaran ${application.full_name} berhasil diverifikasi.`
         : `Pendaftaran ${application.full_name} berhasil ditolak.`)
     } catch (err) {
@@ -91,7 +91,7 @@ export default function AdminDashboardPage() {
       <div className="stats-grid">
         <StatCard label="Total Pendaftar" value={stats.totalPendaftar} icon="📋" color="var(--blue)" />
         <StatCard label="Menunggu" value={stats.menunggu} icon="⏳" color="#f59e0b" />
-        <StatCard label="Diproses" value={stats.diproses} icon="🔄" color="#6366f1" />
+        <StatCard label="Berhasil" value={stats.berhasil} icon="✅" color="#6366f1" />
         <StatCard label="Diterima" value={stats.diterima} icon="✅" color="#22c55e" />
         <StatCard label="Ditolak" value={stats.ditolak} icon="❌" color="#ef4444" />
         <StatCard label="Berita Published" value={stats.beritaPublished} icon="📰" color="var(--blue)" />
@@ -146,7 +146,7 @@ export default function AdminDashboardPage() {
                           type="button"
                           className="button btn-sm"
                           disabled={processingId === application.id}
-                          onClick={() => updateApplicationStatus(application, 'diproses')}
+                          onClick={() => updateApplicationStatus(application, 'berhasil')}
                         >
                           {processingId === application.id ? 'Menyimpan…' : 'Verifikasi'}
                         </button>

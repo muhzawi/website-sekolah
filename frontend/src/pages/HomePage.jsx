@@ -38,10 +38,7 @@ export default function HomePage() {
             Menjadi sekolah vokasi unggulan yang menghasilkan lulusan siap
             kerja dan berdaya saing tinggi di era digital.
           </p>
-          <div className="hero-actions">
-            <Link className="button" to="/profil">Lihat Profil Sekolah</Link>
-            <Link className="button button--secondary" to="/program">Lihat Program Keahlian</Link>
-          </div>
+        
         </div>
         <div className="home-hero-visual">
           <ImageSlider slides={heroSlides} label="Galeri kegiatan sekolah" />

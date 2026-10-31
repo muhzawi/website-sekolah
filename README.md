@@ -183,6 +183,7 @@ Kunjungi https://app.supabase.com dan buat project baru.
 ### 2. Jalankan SQL Migration
 
 Buka **SQL Editor** di Supabase Dashboard, paste dan jalankan isi file `supabase/migration.sql`.
+Migration ini juga memperbarui status lama `diproses` menjadi `berhasil`; jalankan ulang di project Supabase yang sudah ada agar perubahan status berlaku.
 
 ### 3. Buat Storage Buckets
 
