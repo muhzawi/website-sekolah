@@ -716,20 +716,234 @@
    PESERTA DASHBOARD
    ================================================================ */
 
+.peserta-dashboard {
+  position: relative;
+  --peserta-blue: #1d4ed8;
+  --peserta-blue-dark: #1e40af;
+  --peserta-blue-soft: #eff6ff;
+  --peserta-blue-line: #dbeafe;
+}
+
+.peserta-welcome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 176px;
+  margin-bottom: 18px;
+  padding: 28px 32px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 22px;
+  background: #1d4ed8;
+  box-shadow: 0 18px 40px rgb(30 64 175 / 20%);
+}
+
+.peserta-welcome h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(24px, 3vw, 34px);
+  letter-spacing: -.04em;
+}
+
+.peserta-welcome p {
+  margin: 9px 0 0;
+  color: #fff;
+}
+
+.peserta-welcome-mark {
+  position: relative;
+  display: grid;
+  flex: 0 0 112px;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 40%);
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: 0 18px 38px rgb(15 23 42 / 14%), inset 0 1px 0 rgb(255 255 255 / 35%);
+  backdrop-filter: blur(8px);
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  transform: none;
+}
+
+.peserta-welcome-mark img {
+  display: block;
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+  transform: none;
+}
+
+.peserta-bento-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.peserta-bento-status {
+  grid-column: 1 / -1;
+  min-height: 240px;
+}
+
+.peserta-bento-period {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+.peserta-bento-grid.is-no-period .peserta-bento-status {
+  grid-column: 1 / -1;
+}
+
+.bento-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.bento-card-kicker {
+  color: #54709b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+
+.registration-number {
+  display: grid;
+  gap: 7px;
+  margin: 20px 0 24px;
+}
+
+.registration-number > span {
+  color: #6b7f9c;
+  font-size: 12px;
+}
+
+.registration-number .reg-number {
+  font-size: clamp(22px, 3vw, 30px);
+}
+
+.bento-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: fit-content;
+  margin-top: auto;
+}
+
+.period-live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 4px #dcfce7;
+}
+
+.period-info-card.peserta-bento-period h2 {
+  margin: 0;
+  color: #172554;
+  font-size: 22px;
+  letter-spacing: -.025em;
+}
+
+.period-academic-year {
+  margin: 5px 0 22px;
+  color: #657b99;
+  font-size: 13px;
+}
+
+.period-info-card.peserta-bento-period .period-details {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.peserta-bento-period .period-details > div {
+  min-width: 0;
+  padding: 12px;
+}
+
+.peserta-bento-period .period-details strong {
+  font-size: 13px;
+}
+
 .peserta-status-card {
-  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  padding: 28px;
+  border: 1px solid #d7e5fb;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #fff 0%, #fbfdff 100%);
+  box-shadow: 0 12px 32px rgb(26 57 116 / 7%), 0 2px 5px rgb(26 57 116 / 3%);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.peserta-status-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background: linear-gradient(90deg, #1d4ed8, #60a5fa);
+  content: '';
+}
+
+.peserta-status-card:hover {
+  border-color: #b8d0f5;
+  box-shadow: 0 17px 38px rgb(26 57 116 / 10%), 0 3px 8px rgb(26 57 116 / 4%);
+  transform: translateY(-2px);
+}
+
+.peserta-welcome {
+  margin-bottom: 18px;
+}
+
+.peserta-eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
 }
 
 .peserta-status-info {
   display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 16px;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.peserta-status-mark {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #dbeafe, #eff6ff);
+  box-shadow: inset 0 0 0 1px #bfdbfe;
+}
+
+.peserta-status-label {
+  margin: 0 0 5px;
+  font-size: 12px;
+}
+
+.peserta-status-label:not(:first-child) {
+  margin-top: 14px;
 }
 
 .reg-number {
   font-size: 22px;
-  color: var(--blue);
+  color: var(--peserta-blue-dark);
   letter-spacing: 0.05em;
   font-family: 'Courier New', monospace;
 }
@@ -754,12 +968,21 @@
 }
 
 .period-info-card {
-  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid #d7e5fb;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 100% 0%, rgb(219 234 254 / 62%), transparent 34%),
+    linear-gradient(145deg, #fff 0%, #f8fbff 100%);
+  box-shadow: 0 12px 32px rgb(26 57 116 / 6%);
 }
 
 .period-info-card h2 {
   margin: 0 0 14px;
   font-size: 18px;
+  color: #172554;
 }
 
 .period-details {
@@ -771,6 +994,10 @@
 .period-details > div {
   display: grid;
   gap: 4px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #f5f9ff;
+  box-shadow: inset 0 0 0 1px #e6f0ff;
 }
 
 .period-details span {
@@ -785,40 +1012,17 @@
   font-size: 14px;
 }
 
-.peserta-quick-nav {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+.peserta-dashboard .button:not(.button--secondary) {
+  background: var(--peserta-blue);
+  border-color: var(--peserta-blue);
+  box-shadow: 0 5px 12px rgb(29 78 216 / 18%);
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
 }
 
-.quick-nav-card {
-  padding: 20px;
-  border-radius: 16px;
-  text-decoration: none;
-  color: inherit;
-  transition: box-shadow 150ms, transform 150ms;
-  display: grid;
-  gap: 6px;
-}
-
-.quick-nav-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgb(25 48 89 / 8%);
-}
-
-.quick-nav-card span {
-  font-size: 28px;
-}
-
-.quick-nav-card strong {
-  color: var(--ink);
-  font-size: 15px;
-}
-
-.quick-nav-card p {
-  margin: 0;
-  color: var(--body-text);
-  font-size: 12px;
+.peserta-dashboard .button:not(.button--secondary):hover {
+  background: var(--peserta-blue-dark);
+  border-color: var(--peserta-blue-dark);
+  box-shadow: 0 8px 18px rgb(29 78 216 / 26%);
 }
 
 .admin-notes-box {
@@ -828,6 +1032,44 @@
   border: 1px solid #fde68a;
   border-radius: 10px;
   font-size: 13px;
+}
+
+.no-application {
+  padding: 30px 20px;
+}
+
+.peserta-status-card .no-application {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.peserta-status-card .no-application > div {
+  min-width: 0;
+  max-width: 360px;
+}
+
+.peserta-status-card .no-application .button {
+  width: fit-content;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.peserta-status-card .no-application h2,
+.peserta-status-card .no-application p {
+  margin-top: 0;
+}
+
+.peserta-status-card .no-application p {
+  margin-bottom: 0;
+}
+
+.peserta-status-card .no-application p {
+  max-width: 520px;
 }
 
 .admin-notes-box strong {
@@ -1099,10 +1341,20 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .peserta-quick-nav,
   .period-details {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .peserta-bento-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .peserta-bento-status,
+  .peserta-bento-grid.is-no-period .peserta-bento-status,
+  .peserta-bento-period {
+    grid-column: 1 / -1;
+  }
+
 }
 
 @media (max-width: 700px) {
@@ -1140,16 +1392,66 @@
     grid-template-columns: 1fr;
   }
 
-  .peserta-quick-nav,
   .period-details {
     grid-template-columns: 1fr;
   }
 
+  .peserta-welcome {
+    min-height: 0;
+    gap: 14px;
+    padding: 22px;
+    border-radius: 19px;
+  }
+
+  .peserta-welcome-mark {
+    flex-basis: 72px;
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    font-size: 13px;
+  }
+
+  .peserta-bento-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .peserta-bento-status,
+  .peserta-bento-period,
+  .peserta-bento-grid.is-no-period .peserta-bento-status,
+  .peserta-bento-status {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .peserta-status-card .no-application {
+    gap: 14px;
+  }
+
+  .peserta-status-card .no-application > div {
+    max-width: 100%;
+  }
+
+  .peserta-bento-period .period-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .peserta-status-info {
-    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .peserta-status-card {
+    padding: 20px;
   }
 
   .table-wrapper {
     overflow-x: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peserta-status-card,
+  .peserta-dashboard .button:not(.button--secondary) {
+    transition: none;
   }
 }

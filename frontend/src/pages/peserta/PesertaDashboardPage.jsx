@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext.jsx'
 import api from '../../services/api.js'
 import { ErrorState, Spinner } from '../../components/Feedback.jsx'
+import tutWuriHandayaniLogo from '../../assets/tut-wuri-handayani.png'
 
 const STATUS_LABELS = {
-  menunggu: { label: 'Menunggu Verifikasi', color: '#f59e0b', icon: '⏳' },
-  berhasil: { label: 'Berhasil', color: '#6366f1', icon: '✅' },
-  diterima: { label: 'Diterima', color: '#22c55e', icon: '✅' },
-  ditolak: { label: 'Ditolak', color: '#ef4444', icon: '❌' },
+  menunggu: { label: 'Menunggu Verifikasi', color: '#f59e0b' },
+  berhasil: { label: 'Berhasil', color: '#6366f1' },
+  diterima: { label: 'Diterima', color: '#22c55e' },
+  ditolak: { label: 'Ditolak', color: '#ef4444' },
 }
 
 export default function PesertaDashboardPage() {
@@ -45,97 +46,89 @@ export default function PesertaDashboardPage() {
 
   return (
     <div className="peserta-dashboard">
-      <div className="page-heading">
-        <h1>Selamat Datang, {user?.fullName || 'Peserta'}!</h1>
-        <p>Dashboard PPDB Anda.</p>
-      </div>
-
-      {/* Status Card */}
-      <div className="surface content-card peserta-status-card">
-        {application && !application.is_draft ? (
-          <>
-            <div className="peserta-status-info">
-              <span style={{ fontSize: '32px' }}>{statusInfo?.icon}</span>
-              <div>
-                <p className="muted-copy">No. Pendaftaran</p>
-                <strong className="reg-number">{application.registration_number}</strong>
-                <p className="muted-copy" style={{ marginTop: '8px' }}>Status Pendaftaran</p>
-                <span
-                  className="status-badge"
-                  style={{ background: statusInfo?.color + '22', color: statusInfo?.color }}
-                >
-                  {statusInfo?.label}
-                </span>
-              </div>
-            </div>
-            {application.admin_notes && (
-              <div className="admin-notes-box">
-                <strong>Catatan Admin:</strong>
-                <p>{application.admin_notes}</p>
-              </div>
-            )}
-            <Link to="/peserta/status" className="button button--secondary">Lihat Detail Status</Link>
-          </>
-        ) : (
-          <div className="no-application">
-            <span style={{ fontSize: '48px' }}>📝</span>
-            <h2>{application?.is_draft ? 'Draft belum dikirim' : 'Belum ada pendaftaran'}</h2>
-            <p>
-              {application?.is_draft
-                ? 'Anda memiliki draft formulir. Lengkapi dan kirim untuk mendapatkan nomor pendaftaran.'
-                : period
-                  ? `Periode PPDB ${period.period_name} (${period.academic_year}) sedang dibuka. Daftar sekarang!`
-                  : 'Pendaftaran PPDB belum dibuka. Pantau terus untuk informasi terbaru.'}
-            </p>
-            {period && (
-              <Link to="/peserta/ppdb" className="button">
-                {application?.is_draft ? 'Lanjutkan Formulir' : 'Mulai Pendaftaran'}
-              </Link>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* PPDB Period Info */}
-      {period && (
-        <div className="surface content-card period-info-card">
-          <h2>Informasi PPDB</h2>
-          <div className="period-details">
-            <div>
-              <span>Periode</span>
-              <strong>{period.period_name} — {period.academic_year}</strong>
-            </div>
-            <div>
-              <span>Dibuka</span>
-              <strong>{new Date(period.open_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</strong>
-            </div>
-            <div>
-              <span>Ditutup</span>
-              <strong>{new Date(period.close_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</strong>
-            </div>
-          </div>
+      <header className="peserta-welcome surface">
+        <div>
+          <span className="peserta-eyebrow">PORTAL PESERTA · PPDB</span>
+          <h1>Selamat Datang, {user?.fullName || 'Peserta'}!</h1>
+          <p>Pantau pendaftaran dan temukan langkah berikutnya di sini.</p>
         </div>
-      )}
+        <span className="peserta-welcome-mark" role="img" aria-label="Logo Tut Wuri Handayani">
+          <img src={tutWuriHandayaniLogo} alt="" />
+        </span>
+      </header>
 
-      {/* Quick nav */}
-      <div className="peserta-quick-nav">
-        {(!application || application.is_draft) && period && (
-          <Link to="/peserta/ppdb" className="quick-nav-card surface">
-            <span>📝</span>
-            <strong>Formulir PPDB</strong>
-            <p>Isi dan kirim formulir pendaftaran</p>
-          </Link>
+      <div className={`peserta-bento-grid${period ? '' : ' is-no-period'}`}>
+        <section className="surface peserta-status-card peserta-bento-status" aria-label="Ringkasan pendaftaran">
+          <div className="bento-card-heading">
+            <span className="bento-card-kicker">PENDAFTARAN</span>
+            {application && !application.is_draft && (
+              <span
+                className="status-badge"
+                style={{ background: (statusInfo?.color || '#2563eb') + '22', color: statusInfo?.color || '#2563eb' }}
+              >
+                {statusInfo?.label || 'Sedang Diproses'}
+              </span>
+            )}
+          </div>
+
+          {application && !application.is_draft ? (
+            <>
+              <div className="registration-number">
+                <span className="muted-copy">Nomor pendaftaran</span>
+                <strong className="reg-number">{application.registration_number}</strong>
+              </div>
+              {application.admin_notes && (
+                <div className="admin-notes-box">
+                  <strong>Catatan Admin</strong>
+                  <p>{application.admin_notes}</p>
+                </div>
+              )}
+              <Link to="/peserta/status" className="button button--secondary bento-action">
+                Lihat detail status <span aria-hidden="true">→</span>
+              </Link>
+            </>
+          ) : (
+            <div className="no-application">
+              <div>
+                <h2>{application?.is_draft ? 'Draft belum dikirim' : 'Belum ada pendaftaran'}</h2>
+                <p>
+                  {application?.is_draft
+                    ? 'Lengkapi draft formulir untuk mendapatkan nomor pendaftaran.'
+                    : period
+                      ? `Periode PPDB ${period.period_name} (${period.academic_year}) sedang dibuka. Daftar sekarang.`
+                      : 'Pendaftaran PPDB belum dibuka. Pantau terus informasi terbaru.'}
+                </p>
+              </div>
+              {period && (
+                <Link to="/peserta/ppdb" className="button">
+                  {application?.is_draft ? 'Lanjutkan formulir' : 'Mulai pendaftaran'}
+                </Link>
+              )}
+            </div>
+          )}
+        </section>
+
+        {period && (
+          <section className="surface content-card period-info-card peserta-bento-period">
+            <div className="bento-card-heading">
+              <span className="bento-card-kicker">JADWAL PENERIMAAN</span>
+              <span className="period-live-dot" aria-label="Informasi periode aktif" />
+            </div>
+            <h2>{period.period_name}</h2>
+            <p className="period-academic-year">Tahun ajaran {period.academic_year}</p>
+            <div className="period-details">
+              <div>
+                <span>Dibuka</span>
+                <strong>{new Date(period.open_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</strong>
+              </div>
+              <div>
+                <span>Ditutup</span>
+                <strong>{new Date(period.close_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</strong>
+              </div>
+            </div>
+          </section>
         )}
-        <Link to="/peserta/status" className="quick-nav-card surface">
-          <span>📋</span>
-          <strong>Status Pendaftaran</strong>
-          <p>Lihat status dan catatan admin</p>
-        </Link>
-        <Link to="/peserta/profil" className="quick-nav-card surface">
-          <span>👤</span>
-          <strong>Profil Akun</strong>
-          <p>Perbarui informasi akun Anda</p>
-        </Link>
+
       </div>
     </div>
   )

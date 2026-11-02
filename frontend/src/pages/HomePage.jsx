@@ -32,13 +32,12 @@ export default function HomePage() {
     <>
       <section className="home-hero surface">
         <div className="home-hero-copy">
-          <span className="tag">Website Resmi</span>
+          <span className="tag">Portal Resmi</span>
           <h1>SMK Negeri 1 Nusantara</h1>
           <p>
             Menjadi sekolah vokasi unggulan yang menghasilkan lulusan siap
             kerja dan berdaya saing tinggi di era digital.
           </p>
-        
         </div>
         <div className="home-hero-visual">
           <ImageSlider slides={heroSlides} label="Galeri kegiatan sekolah" />

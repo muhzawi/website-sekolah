@@ -57,10 +57,10 @@ export default function NewsListPage() {
   }, [search, activePage, sortOrder, fetchNews, retryKey])
 
   return (
-    <>
+    <div className="news-list-page">
       <PageHeading breadcrumbs={['Beranda', 'Berita & Pengumuman']} title="Berita & Pengumuman" size="medium" />
 
-      <div className="news-search-bar" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+      <div className="news-search-bar">
         <input
           type="search"
           placeholder="Cari berita…"
@@ -78,7 +78,10 @@ export default function NewsListPage() {
       {!loading && error && <ErrorState message={error} onRetry={() => setRetryKey(key => key + 1)} />}
 
       {!loading && featured && !search && (
-        <Link to={`/news/${featured.slug}`} className="featured-news surface">
+        <Link
+          to={`/news/${featured.slug}`}
+          className={`featured-news surface${newsImageUrl(featured.cover_image_path) ? '' : ' has-no-image'}`}
+        >
           {newsImageUrl(featured.cover_image_path) && (
             <img src={newsImageUrl(featured.cover_image_path)} alt={featured.title} />
           )}
@@ -125,6 +128,6 @@ export default function NewsListPage() {
           <button type="button" disabled={activePage === pagination.totalPages} onClick={() => setActivePage(p => p + 1)}>›</button>
         </nav>
       )}
-    </>
+    </div>
   )
 }
