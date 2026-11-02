@@ -31,7 +31,7 @@ export default function NewsDetailPage() {
   const coverUrl = newsImageUrl(news.cover_image_path)
 
   return (
-    <>
+    <div className="news-detail-page">
       <PageHeading
         breadcrumbs={['Beranda', 'Berita', news.title]}
         title={news.title}
@@ -62,6 +62,6 @@ export default function NewsDetailPage() {
           ← Kembali ke Daftar Berita
         </Link>
       </article>
-    </>
+    </div>
   )
 }
